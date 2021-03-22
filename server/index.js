@@ -8,8 +8,6 @@ io.on('connection', (socket) => {
     console.log('User connected');
 
     socket.on('message', (message) => {
-        console.log('From the server');
-        console.log(message);
         io.emit('message', message);
     });
 });

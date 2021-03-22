@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import YouTube from 'react-youtube';
 import './index.css';
 import socketClient from 'socket.io-client';
 
 
-let cElement = null;
+let event = null;
 function Video(props) {
     const opts = {
         playerVars: {
@@ -12,40 +12,66 @@ function Video(props) {
         }
     };
 
-    useEffect(() => {
-        if (cElement) {
-            if (props.isPaused) {
-                cElement.target.pauseVideo();
-            } else {
-                cElement.target.playVideo();
-            }
-        }
-    }, [props.socket, props.isPaused]);
-
-    useEffect(() => {
-        // Effect only used when the prop value is changed
-        if (cElement) {
+    React.useEffect(() => {
+        if (event) {
+            // if (props.isPaused) {
+            //     event.target.pauseVideo();
+            // } else {
+            //     event.target.playVideo();
+            // }
+            console.log(event.target.getPlayerState());
             const payload = {
-                'action': 'sync',
-                'timestamp': cElement.target.getCurrentTime()
+                'action': 'playpause',
+                'state': event.target.getPlayerState()
             };
             props.socket.emit('message', payload);
         }
-    }, [props.socket, props.syncCounter]);
+    }, [props.playPauseCounter]);
+
+    React.useEffect(() => {
+        if (event) {
+            event.target.pauseVideo();
+            const payload = {
+                'action': 'sync',
+                'timestamp': event.target.getCurrentTime()
+            };
+            props.socket.emit('message', payload);
+        }
+    }, [props.syncCounter]);
+
+    React.useEffect(() => {
+        console.log('called effect')
+        if (event) {
+            event.target.playVideo();
+        }
+    }, [props.playCounter]);
+
+    React.useEffect(() => {
+        if (event) {
+            event.target.pauseVideo();
+        }
+    }, [props.pauseCounter]);
 
     props.socket.on('message', (message) => {
-        console.log('from the video class' + message);
-        if (message.action === 'sync' && cElement) {
-            cElement.target.seekTo(message.timestamp);
+        if (message.action === 'sync' && event) {
+            event.target.seekTo(message.timestamp);
+            event.target.pauseVideo();
+            event.target.playVideo();
+        } else if (message.action === 'playpause' && event) {
+            if (message.state === 1) {
+                event.target.pauseVideo();
+            } else {
+                event.target.playVideo();
+            }
         }
-    })
+    });
 
     const _onReady = (e) => {
-        cElement = e;
+        event = e;
     };
 
     const _onStateChange = (e) => {
-        cElement = e;
+        event = e;
     };
 
     return (
@@ -61,17 +87,30 @@ function Video(props) {
 function Content() {
     const [videoUrl, setVideoUrl] = React.useState('');
 
-    const [isPaused, setIsPaused] = useState(false);
-    const [syncCounter, incrementSyncCounter] = useState(0);
+    const [isPaused, setIsPaused] = React.useState(false);
+    const [playPauseCounter, incrementPlayPauseCounter] = React.useState(0);
+    const [syncCounter, incrementSyncCounter] = React.useState(0);
+
+    const [playCounter, incrementPlayCounter] = React.useState(0);
+    const [pauseCounter, incrementPauseCounter] = React.useState(0);
 
     const togglePause = () => {
         socket.emit('message', 'From togglePause in client')
         setIsPaused(!isPaused);
+        incrementPlayPauseCounter(playPauseCounter + 1);
     };
 
     const sync = () => {
         socket.emit('message', 'Sync!');
-        incrementSyncCounter(syncCounter+1);
+        incrementSyncCounter(syncCounter + 1);
+    };
+
+    const playVideo = () => {
+        incrementPlayCounter(playCounter + 1);
+    };
+
+    const pauseVideo = () => {
+        incrementPauseCounter(pauseCounter + 1);
     };
 
     const socket = socketClient('http://127.0.0.1:8080');
@@ -80,10 +119,6 @@ function Content() {
         console.log(videoUrl);
         videoCode = videoUrl.split('v=')[1].split('&')[0];
     }
-
-    socket.on('message', (message) => {
-        console.log(message);
-    });
 
     return (
         <div>
@@ -94,8 +129,8 @@ function Content() {
             <div>
                 <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
 
-                <Video socket={socket} isPaused={isPaused} syncCounter={syncCounter} />
-                <button onClick={togglePause}>Local Pause</button>
+                <Video socket={socket} isPaused={isPaused} playPauseCounter={playPauseCounter} syncCounter={syncCounter} playCounter={playCounter} pauseCounter={pauseCounter} />
+                <button onClick={togglePause}>Play/Pause</button>
 
                 <button onClick={sync}>Sync</button>
             </div>
