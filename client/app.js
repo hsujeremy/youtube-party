@@ -48,31 +48,22 @@ function playPauseVideo() {
     }
 }
 
-function playVideo() {
-    player.playVideo();
-}
-
-function pauseVideo() {
-    player.pauseVideo();
-}
-
 const socket = io('ws://localhost:8080');
 
 socket.on('message', (message) => {
-    console.log(message.action);
-    if (message.action === 'play') {
-        player.playVideo();
-        console.log(`Played at ${player.getCurrentTime()}`);
-    } else if (message.action === 'pause') {
+    if (message.action === 'playpause') {
+        playPauseVideo();
+    } else if (message.action === 'sync') {
+        console.log(message.time)
+        player.seekTo(message.time);
         player.pauseVideo();
-        console.log(`Paused at ${player.getCurrentTime()}`);
     }
 });
 
-document.querySelector('#play').onclick = () => {
-    socket.emit('message', {'action': 'play'})
-};
+document.querySelector('#playpause').onclick = () => {
+    socket.emit('message', {'action': 'playpause'});
+}
 
-document.querySelector('#pause').onclick = () => {
-    socket.emit('message', {'action': 'pause'})
+document.querySelector('#sync').onclick = () => {
+    socket.emit('message', {'action': 'sync', 'time': player.getCurrentTime()});
 }
