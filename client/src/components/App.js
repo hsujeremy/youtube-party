@@ -1,7 +1,6 @@
 import React from 'react';
 import socketClient from 'socket.io-client';
 import Video from './Video.js';
-import './index.css';
 
 
 const App = () => {
