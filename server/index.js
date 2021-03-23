@@ -4,6 +4,7 @@ const io = require('socket.io')(http, {
     cors: { origin: '*' }
 });
 
+// "connects" each time the react page rerenders
 io.on('connection', (socket) => {
     console.log('User connected');
 
