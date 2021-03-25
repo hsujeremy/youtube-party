@@ -1,5 +1,6 @@
 import React from 'react';
 import socketClient from 'socket.io-client';
+import SearchHead from './SearchHead.js';
 import Video from './Video.js';
 
 
@@ -25,15 +26,7 @@ const App = () => {
         } catch(TypeError) {
             return (
                 <div>
-                    <div>
-                        <h1>YouTube Party</h1>
-                        <div></div>
-                    </div>
-                    <div>
-                        <label>
-                            Video URL: <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
-                        </label>
-                    </div>
+                    <SearchHead videoUrl={videoUrl} onVideoUrlChange={(url) => setVideoUrl(url)} />
                     <p>Please enter a valid URL</p>
                 </div>
             );
@@ -41,15 +34,7 @@ const App = () => {
 
         return (
             <div>
-                <div>
-                    <h1>YouTube Party</h1>
-                    <div></div>
-                </div>
-                <div>
-                    <label>
-                        Video URL: <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
-                    </label>
-
+                <SearchHead videoUrl={videoUrl} onVideoUrlChange={(url) => setVideoUrl(url)} />
                     <Video
                         videoId={videoCode}
                         socket={socket}
@@ -58,23 +43,13 @@ const App = () => {
                     />
 
                     <button onClick={togglePause}>Play/Pause</button>
-
                     <button onClick={sync}>Sync</button>
-                </div>
             </div>
         );
     }
     return (
         <div>
-            <div>
-                <h1>YouTube Party</h1>
-                <div></div>
-            </div>
-            <div>
-                <label>
-                    Video URL: <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
-                </label>
-            </div>
+            <SearchHead videoUrl={videoUrl} onVideoUrlChange={(url) => setVideoUrl(url)} />
         </div>
     );
 };
