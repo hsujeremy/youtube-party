@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchHead from './SearchHead.js';
 import Video from './Video.js';
+import { socket } from '../services/socket';
 
 
 const App = () => {
@@ -8,6 +9,18 @@ const App = () => {
 
     const [playPauseCounter, incrementPlayPauseCounter] = React.useState(0);
     const [syncCounter, incrementSyncCounter] = React.useState(0);
+
+    const [numUsers, updateNumUsers] = React.useState(0);
+
+    React.useEffect(() => {
+        socket.on('connection', (content) => {
+            updateNumUsers(content.numUsers);
+        });
+
+        socket.on('disconnection', (content) => {
+            updateNumUsers(content.numUsers);
+        });
+    });
 
     const togglePause = () => {
         incrementPlayPauseCounter(playPauseCounter + 1);
@@ -47,6 +60,7 @@ const App = () => {
     return (
         <div>
             <SearchHead videoUrl={videoUrl} onVideoUrlChange={(url) => setVideoUrl(url)} />
+            <div>{numUsers}</div>
         </div>
     );
 };

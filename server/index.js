@@ -5,16 +5,22 @@ const io = require('socket.io')(http, {
     cors: { origin: '*' }
 });
 
+let numUsers = 0;
+
 // "connects" each time the react page rerenders
 io.on('connection', (socket) => {
-    console.log('User connected');
+    numUsers++;
+    console.log(`User connected. There are now ${numUsers} user(s)`);
+    io.emit('connection', { 'numUsers': numUsers });
 
     socket.on('message', (message) => {
         io.emit('message', message);
     });
 
     socket.on('disconnect', () => {
-        console.log('User disconnected');
+        numUsers--;
+        console.log(`User disconnected. There are now ${numUsers} user(s)`);
+        io.emit('disconnection', { 'numUsers': numUsers });
     });
 });
 
