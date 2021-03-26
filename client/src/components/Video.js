@@ -2,6 +2,7 @@ import React from 'react';
 import YouTube from 'react-youtube';
 import { socket } from '../services/socket';
 
+
 let event = null;
 const Video = (props) => {
     const opts = {
@@ -29,27 +30,29 @@ const Video = (props) => {
         }
     }, [props.syncCounter]);
 
-    socket.on('message', (message) => {
-        if (event) {
-            if (message.action === 'sync') {
-                event.target.seekTo(message.timestamp);
-                event.target.pauseVideo();
-                event.target.playVideo();
-            } else if (message.action === 'playpause') {
-                if (message.state === 1) {
+    React.useEffect(() => {
+        socket.on('message', (message) => {
+            if (event) {
+                if (message.action === 'sync') {
+                    event.target.seekTo(message.timestamp);
                     event.target.pauseVideo();
-                } else {
                     event.target.playVideo();
+                } else if (message.action === 'playpause') {
+                    if (message.state === 1) {
+                        event.target.pauseVideo();
+                    } else {
+                        event.target.playVideo();
+                    }
                 }
             }
-        }
+        });
     });
 
-    const _onReady = (e) => {
+    const onReady = (e) => {
         event = e;
     };
 
-    const _onStateChange = (e) => {
+    const onStateChange = (e) => {
         event = e;
     };
 
@@ -57,8 +60,8 @@ const Video = (props) => {
         <YouTube
             videoId={props.videoId}
             opts={opts}
-            onReady={_onReady}
-            onStateChange={_onStateChange}
+            onReady={onReady}
+            onStateChange={onStateChange}
         />
     );
 };
