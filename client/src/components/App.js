@@ -1,5 +1,4 @@
 import React from 'react';
-import socketClient from 'socket.io-client';
 import SearchHead from './SearchHead.js';
 import Video from './Video.js';
 
@@ -18,7 +17,6 @@ const App = () => {
         incrementSyncCounter(syncCounter + 1);
     };
 
-    const socket = socketClient('http://127.0.0.1:8080');
     let videoCode;
     if (videoUrl) {
         try {
@@ -37,7 +35,6 @@ const App = () => {
                 <SearchHead videoUrl={videoUrl} onVideoUrlChange={(url) => setVideoUrl(url)} />
                     <Video
                         videoId={videoCode}
-                        socket={socket}
                         playPauseCounter={playPauseCounter}
                         syncCounter={syncCounter}
                     />

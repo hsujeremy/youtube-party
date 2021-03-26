@@ -1,6 +1,6 @@
 import React from 'react';
 import YouTube from 'react-youtube';
-// import socketClient from 'socket.io-client';
+import { socket } from '../services/socket';
 
 let event = null;
 const Video = (props) => {
@@ -12,7 +12,7 @@ const Video = (props) => {
 
     React.useEffect(() => {
         if (event) {
-            props.socket.emit('message', {
+            socket.emit('message', {
                 'action': 'playpause',
                 'state': event.target.getPlayerState()
             });
@@ -22,14 +22,14 @@ const Video = (props) => {
     React.useEffect(() => {
         if (event) {
             event.target.pauseVideo();
-            props.socket.emit('message', {
+            socket.emit('message', {
                 'action': 'sync',
                 'timestamp': event.target.getCurrentTime()
             });
         }
     }, [props.syncCounter]);
 
-    props.socket.on('message', (message) => {
+    socket.on('message', (message) => {
         if (event) {
             if (message.action === 'sync') {
                 event.target.seekTo(message.timestamp);
