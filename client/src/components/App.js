@@ -2,7 +2,7 @@ import React from 'react';
 import SearchHead from './SearchHead.js';
 import Video from './Video.js';
 import UserCount from './UserCount';
-import { socket } from '../services/socket';
+import Chat from './Chat';
 
 
 const App = () => {
@@ -51,6 +51,7 @@ const App = () => {
         <div>
             <SearchHead videoUrl={videoUrl} onVideoUrlChange={(url) => setVideoUrl(url)} />
             <UserCount />
+            <Chat />
         </div>
     );
 };
