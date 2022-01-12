@@ -4,9 +4,6 @@ YouTube Party is a full-stack web application that lets any number of users
 stream YouTube videos in sync using the Socket.IO library and the YouTube iFrame
 API.
 
-YouTube Party is no longer in active development and is currently in maintence
-mode.
-
 ## Architecture Overview
 
 The high-level architecture layout of YouTube Party is as follows:
@@ -22,3 +19,18 @@ while the client is built using the React framework.
 
 Both the server and client use Socket.IO to form the network connection but only
 the client calls the YouTube iFrame API for its embedded video player.
+
+## Contributing
+
+```console
+# Starting the server
+cd server
+node index.js
+
+# Starting the client
+cd client
+yarn start
+```
+
+YouTube Party is no longer in active development and is currently in maintence
+mode.
