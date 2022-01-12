@@ -6,6 +6,13 @@ API.
 
 ## Architecture Overview
 
+In order to support synchronous message passing between multiple clients and a
+server, YouTube Party uses the 
+[WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) 
+API, which enables two-way communication
+between each server and client. Notably, each client may receive messages from
+the server without having to regularly poll the server.
+
 The high-level architecture layout of YouTube Party is as follows:
 
 <img
