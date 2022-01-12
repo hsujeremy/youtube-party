@@ -1,7 +1,9 @@
 # YouTube Party: A Synchronized Streaming Platform
 
 YouTube Party is a full-stack web application that lets any number of users
-stream YouTube videos in sync using the Socket.IO library and the YouTube iFrame
+stream YouTube videos in sync using the 
+[Socket.IO](https://socket.io) library and the 
+[YouTube iFrame](https://developers.google.com/youtube/iframe_api_reference)
 API.
 
 ## Architecture Overview
