@@ -1,16 +1,16 @@
-import React from 'react';
+import { useEffect } from 'react';
 import YouTube from 'react-youtube';
 import { socket } from '../services/socket';
 
 let event = null;
-const Video = (props) => {
+function Video(props) {
   const opts = {
     playerVars: {
       autoplay: 1
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (event) {
       socket.emit('message', {
         'action': 'playpause',
@@ -19,7 +19,7 @@ const Video = (props) => {
     }
   }, [props.playPauseCounter]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (event) {
       event.target.pauseVideo();
       socket.emit('message', {
@@ -29,7 +29,7 @@ const Video = (props) => {
     }
   }, [props.syncCounter]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     socket.on('message', (message) => {
       if (event) {
         if (message.action === 'sync') {
@@ -54,6 +54,8 @@ const Video = (props) => {
   const onStateChange = (e) => {
     event = e;
   };
+
+  console.log(props);
 
   return (
     <YouTube

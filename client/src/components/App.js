@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import SearchHead from './SearchHead.js';
 import Video from './Video.js';
 import UserCount from './UserCount';
 import Chat from './Chat';
 
-const App = () => {
-  const [videoUrl, setVideoUrl] = React.useState('');
-  const [playPauseCounter, incrementPlayPauseCounter] = React.useState(0);
-  const [syncCounter, incrementSyncCounter] = React.useState(0);
+function App() {
+  const [videoUrl, setVideoUrl] = useState('');
+  const [playPauseCounter, incrementPlayPauseCounter] = useState(0);
+  const [syncCounter, incrementSyncCounter] = useState(0);
 
   const togglePause = () => {
     incrementPlayPauseCounter(playPauseCounter + 1);

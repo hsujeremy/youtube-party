@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { socket } from '../services/socket';
 
-const Chat = () => {
-  const [messages, updateMessages] = React.useState([]);
-  const [currentMessage, updateCurrentMessage] = React.useState('');
+function Chat() {
+  const [messages, updateMessages] = useState([]);
+  const [currentMessage, updateCurrentMessage] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     socket.on('chat', (data) => {
       let newMessages = messages.concat([data]);
       updateMessages(newMessages);

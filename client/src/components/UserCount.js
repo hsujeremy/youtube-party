@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { socket } from '../services/socket';
 
-const UserCount = () => {
-  const [numUsers, updateNumUsers] = React.useState(0);
+function UserCount() {
+  const [numUsers, updateNumUsers] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     socket.on('connection', (content) => {
       updateNumUsers(content.numUsers);
     });

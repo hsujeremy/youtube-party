@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchHead = (props) => {
+function SearchHead(props) {
   return (
     <div>
       <div>
@@ -9,10 +9,10 @@ const SearchHead = (props) => {
       </div>
       <div>
         <label>
-            Video URL: <input
-                         value={props.videoUrl}
-                         onChange={(e) => props.onVideoUrlChange(e.target.value)}
-                       />
+          Video URL: <input
+                       value={props.videoUrl}
+                       onChange={(e) => props.onVideoUrlChange(e.target.value)}
+                     />
         </label>
       </div>
     </div>
