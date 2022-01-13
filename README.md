@@ -15,6 +15,10 @@ API, which enables two-way communication
 between each server and client. Notably, each client may receive messages from
 the server without having to regularly poll the server.
 
+Every time a client sends a message across the channel to the server, the server
+will then broadcast that message out to all connected channels. This allows all
+clients to share a single source of truth that is updated in real time.
+
 The high-level architecture layout of YouTube Party is as follows:
 
 <img
