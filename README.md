@@ -28,21 +28,24 @@ The high-level architecture layout of YouTube Party is as follows:
 />
 
 YouTube Party is written entirely in JavaScript. The server runs on Node.js
-while the client is built using the React framework.
+while the client is built using React.
 
 Both the server and client use Socket.IO to form the network connection but only
 the client calls the YouTube iFrame API for its embedded video player.
 
 ## Contributing
 
-```console
-# Starting the server
-cd server
-node index.js
+To start the server, run:
 
-# Starting the client
-cd client
-yarn start
+```bash
+$ cd server
+$ node index.js
+```
+
+To start the client, run:
+```bash
+$ cd client
+$ yarn start
 ```
 
 YouTube Party is no longer in active development and is currently in maintence
